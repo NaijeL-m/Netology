@@ -116,7 +116,19 @@ class Reviewer(Mentor):
                 student.grades[course] = [grade]
         else:
             return 'Ошибка'
-
+def avg_std(kurs,spisok=[]):
+    summ=0
+    for std in spisok:
+        summ+=sum(std.grades[kurs])/len(std.grades[kurs])
+    res=summ/len(spisok)
+    print('ok')
+    return res
+def avg_lect(kurs,spisok=[]):
+    summ=0
+    for lct in spisok:
+        summ+=sum(lct.grade_l[kurs])/len(lct.grade_l[kurs])
+    res=summ/len(spisok)
+    return res
 
 best_student = Student('Ruoy', 'Eman', 'malchik')
 best_student.courses_in_progress += ['Python']
@@ -134,13 +146,16 @@ s_lector.courses_attached.append('HTML')
 s_lector.courses_attached.append('C#')
 
 some_student = Student('Ivanka', 'Clever', 'devochka')
-some_student.finished_courses.append('Python')
-some_student.courses_in_progress.append('HTML')
+some_student.finished_courses.append('HTML')
+some_student.courses_in_progress.append('Python')
 some_student.courses_in_progress.append('C#')
 
 cool_mentor.rate_hw(best_student, 'Python', 10)
 cool_mentor.rate_hw(best_student, 'Python', 10)
 cool_mentor.rate_hw(best_student, 'Python', 10)
+cool_mentor.rate_hw(some_student, 'Python', 8)
+cool_mentor.rate_hw(some_student, 'Python', 8)
+cool_mentor.rate_hw(some_student, 'Python', 8)
 best_student.rate_lection(some_lector, 'Python', 6)
 best_student.rate_lection(some_lector, 'Python', 8)
 best_student.rate_lection(some_lector, 'Python', 10)
@@ -157,3 +172,5 @@ print(some_student)
 print(prepody)
 mentor_chart()
 student_chart()
+print(avg_std('Python',[some_student,best_student]))
+print(avg_lect('Python',[some_lector,s_lector]))
