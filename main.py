@@ -1,3 +1,4 @@
+f=0
 prepody = []
 study = []
 
