@@ -3,6 +3,27 @@ prepody = []
 study = []
 
 
+def sredn(x):
+    summ = 0
+    count = 0
+    if isinstance(x,Student):
+        for k, v in x.grades.items():
+            summ += sum(v)
+            count += len(v)
+        if count > 0:
+            return summ / count
+        else:
+            return 0
+    elif isinstance(x,Lekturer):
+        for k, v in x.grade_l.items():
+            summ += sum(v)
+            count += len(v)
+        if count > 0:
+            return summ / count
+        else:
+            return 0
+
+
 def mentor_chart():
     chart = {}
     print('Рейтинг преподавателей')
@@ -48,15 +69,7 @@ class Student:
         study.append(self)
 
     def __str__(self):
-        summ = 0
-        count = 0
-        for k, v in self.grades.items():
-            summ += sum(v)
-            count += len(v)
-        if count > 0:
-            sredn = summ / count
-        else:
-            sredn = 0
+        sred=sredn(self)
         progKursi = ''
         for i in self.courses_in_progress:
             progKursi += i + ' '
@@ -65,10 +78,18 @@ class Student:
             zakKursi += i + ' '
         im = 'Имя :' + self.name
         fam = 'Фамилия: ' + self.surname
-        srznach = 'Средняя оценка за домашние задания: ' + str(sredn)
+        srznach = 'Средняя оценка за домашние задания: ' + str(sred)
         kurs = 'Курсы в процессе изучения: ' + progKursi
         zKurs = 'Завершенные курсы: ' + zakKursi
         return im + '\n' + fam + '\n' + srznach + '\n' + kurs + '\n' + zKurs
+    def __lt__(self, other):
+        return sredn(self)<sredn(other)
+    def __gt__(self, other):
+        return sredn(self) > sredn(other)
+    def __ge__(self, other):
+        return sredn(self) >= sredn(other)
+    def __le__(self, other):
+        return sredn(self) <= sredn(other)
 
     def rate_lection(self, lecturer, course, grade_l):
         if isinstance(lecturer,
@@ -105,7 +126,14 @@ class Lekturer(Mentor):
             count += len(v)
         return 'Имя: ' + self.name + '\n' + 'Фамилия: ' + self.surname + '\n' + 'Средний балл за лекции: ' + str(
             summ / count)
-
+    def __lt__(self, other):
+        return sredn(self)<sredn(other)
+    def __gt__(self, other):
+        return sredn(self) > sredn(other)
+    def __ge__(self, other):
+        return sredn(self) >= sredn(other)
+    def __le__(self, other):
+        return sredn(self) <= sredn(other)
 
 class Reviewer(Mentor):
     def rate_hw(self, student, course, grade):
@@ -174,3 +202,5 @@ mentor_chart()
 student_chart()
 print(avg_std('Python',[some_student,best_student]))
 print(avg_lect('Python',[some_lector,s_lector]))
+print(best_student>some_student)
+print(s_lector>some_lector)
